@@ -1,0 +1,8 @@
+FROM gcc:latest
+
+COPY . /usr/src/projectclient
+WORKDIR /usr/src/projectclient
+
+RUN g++ -o projectclient  src/client/CppClientMain.cpp src/client/CppClient.cpp
+
+ENTRYPOINT ["./projectclient"]

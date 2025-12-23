@@ -1,0 +1,32 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: tcp-server
+    ports:
+      - "12345:12345"   # optional, useful for manual testing
+    networks:
+      - tcpnet
+    command: ["./projectapp", "12345"]
+
+  
+  ex3-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: ex3-web
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    networks:
+      - tcpnet
+    environment:
+      EX2_HOST: server
+      EX2_PORT: 12345
+
+networks:
+  tcpnet:
+    driver: bridge
+

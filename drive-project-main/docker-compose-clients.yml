@@ -1,0 +1,34 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: tcp-server
+    ports:
+      - "12345:12345"   # optional, useful for manual testing
+    networks:
+      - tcpnet
+    command: ["./projectapp", "12345"]
+
+  client-cpp:
+    build:
+      context: .
+      dockerfile: Dockerfile.cppclient
+    container_name: tcp-client
+    networks:
+      - tcpnet
+    entrypoint: ["./projectclient"]   # NO ARGS — you pass them in docker compose run
+    tty: true                   # allow interactive use
+
+  client-py:
+    build:
+      context: .
+      dockerfile: Dockerfile.pyclient
+    networks:
+      - tcpnet
+    entrypoint: ["python", "src/client/PythonClient.py"]
+    tty: true
+
+networks:
+  tcpnet:
+    driver: bridge

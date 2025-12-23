@@ -1,0 +1,15 @@
+FROM gcc:latest
+
+RUN apt-get update && apt-get install -y cmake
+
+COPY . /usr/src/inputtest
+
+WORKDIR /usr/src/inputtest
+
+RUN mkdir build
+WORKDIR /usr/src/inputtest/build
+
+RUN cmake .. && make
+
+# Run the tests
+CMD ["sh", "-c", "./runTestsAddInput && ./runTestsGetInput && ./runTestsSearchInput && ./runTestsDeleteInput && ./runTestsInputManager"]

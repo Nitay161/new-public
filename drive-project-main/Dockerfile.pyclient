@@ -1,0 +1,6 @@
+FROM python:3
+
+COPY . /usr/src/pyclient
+WORKDIR /usr/src/pyclient
+
+ENTRYPOINT ["python", "src/client/PythonClient.py"]

@@ -1,0 +1,38 @@
+FROM gcc:latest
+
+COPY . /usr/src/projectapp
+WORKDIR /usr/src/projectapp
+
+#add environment variable
+ENV DRIVE_STORAGE_PATH=/usr/src/projectapp/storage_data
+
+#create storage directory for StorageManager to write files to
+RUN mkdir -p /usr/src/projectapp/storage_data
+
+
+RUN g++ -o projectapp \
+    src/server/main.cpp \
+    src/core/app.cpp \
+    src/core/CLIMenu.cpp \
+    src/commands/AddCommand.cpp  \
+    src/commands/GetCommand.cpp  \
+    src/commands/SearchCommand.cpp  \
+    src/storage/storageManager.cpp \
+    src/compression/Compressor.cpp \
+    src/input/AddInput.cpp  \
+    src/input/GetInput.cpp  \
+    src/input/SearchInput.cpp  \
+    src/input/DeleteInput.cpp  \
+    src/input/InputManager.cpp \
+    src/server/tcp_server.cpp \
+    src/server/ThreadPerClientDispatcher.cpp \
+    src/storage/ConstStorageDispatcher.cpp \
+    src/server/ClientHandler.cpp \
+    src/core/SocketMenu.cpp \
+    src/commands/DeleteCommand.cpp
+
+# Expose the port the server listens on
+EXPOSE 12345
+
+# Run the server on container start
+CMD ["./projectapp", "12345"]
